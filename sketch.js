@@ -44,12 +44,26 @@ hoveredVolcano = null;
     let paese = data.getString(i, "Country");
     let nomeVulcano = riga.get("Volcano Name") || "Unknown";
     let tipo = riga.get("Type");
+    let status = data.getString(i, "Status");
     // converto le coordinate geografiche in pixel
     let x = map(longitudine, longitudineMinima, longitudineMassima, margine, width-margine);
     let y = map(latitudine, latitudineMinima, latitudineMassima, height-margine, margine);
+    let activeColor = 100;
+    let dormantColor = 50;
+    let otherColor = null;
+    let trasparenzaVulcano;
+    if (status.includes("Historical") || status.startsWith("D")) {
+        trasparenzaVulcano = activeColor;
+    } else if (status.includes("Holocene") || status === "U") {
+        trasparenzaVulcano = dormantColor;
+    } else {
+        trasparenzaVulcano = otherColor;
+    }
     let coloreAltitudine = map(altezza, altezzaMinima, altezzaMassima, 0, 1);
-    let gammaColoriPerAltitudine = lerpColor(color(0, 200, 0), color(255, 0, 0), coloreAltitudine);
+    let gammaColoriPerAltitudine = lerpColor(color(0, 200, 0, trasparenzaVulcano), color(255, 0, 0, trasparenzaVulcano), coloreAltitudine);
     fill(gammaColoriPerAltitudine);
+
+
     //fill("yellow");
     let raggio = 5;
 
@@ -126,34 +140,8 @@ hoveredVolcano = null;
 }
   }
 
-// per o stato cambiare opacità
-// al cui interno inserire: nome vulcano - paese 
+// per lo stato cambiare opacità
 // se c'è tempo inserire anche una mappa
-
-
-
-
-/*function drawSun(x, y, radius, blur, color) {
-  noStroke();
-
-  // Applica un filtro di blur solo a questo elemento
-  drawingContext.filter = "blur(" + blur + "px)";
-  fill(color);
-  ellipse(x, y, radius, radius);
-
-  // Reset del filtro per i prossimi elementi
-  drawingContext.filter = "none";
-}
-
-// Funzione per disegnare un tooltip vicino al mouse
-function drawTooltip(px, py, textString) {
-  textSize(16);
-  textAlign(LEFT, CENTER);
-  fill("white");
-  stroke("black");
-  text(textString, px, py);
-}
-*/
 
 function scriviTitolo() {
   push();
@@ -171,3 +159,4 @@ function scriviFooter() {
   fill(250);
   text("Silvia La mastra — Assignment 03", width / 2, height - 20);
 }
+
