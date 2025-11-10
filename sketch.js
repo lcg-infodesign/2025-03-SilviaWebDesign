@@ -166,8 +166,3 @@ function disegnaToolTip(volcano) {
 
   pop();
 }
-//function coloraVulcaniInBaseAltezza
-
-//function AdattaTrasparenzaAlloStatus
-
-//function disegnaToolTip
